@@ -13,15 +13,20 @@ import 'dotenv/config';
 const API_KEY = process.env.TODOIST_API_KEY;
 /**
  * @description Fetch tasks with the highest priority
- * @returns {Promise<Task[]>} Returns tasks with the highest priority
+ * @returns {Promise<Task[] | undefined>} Returns tasks with the highest priority
  */
 const getHighPriorityTasks = () => __awaiter(void 0, void 0, void 0, function* () {
-    if (API_KEY === undefined) {
-        throw new Error('TODOIST_API_KEY environment variable is not set.');
+    try {
+        if (API_KEY === undefined) {
+            throw new Error('TODOIST_API_KEY environment variable is not set.');
+        }
+        const api = new TodoistApi(API_KEY);
+        const tasks = yield api.getTasks();
+        return tasks.filter(task => task.priority === 4);
     }
-    const api = new TodoistApi(API_KEY);
-    const tasks = yield api.getTasks();
-    return tasks.filter(task => task.priority === 4);
+    catch (error) {
+        console.error(error);
+    }
 });
 /**
  * @description Checks if high priority tasks are completed by their due time.
@@ -30,51 +35,59 @@ const getHighPriorityTasks = () => __awaiter(void 0, void 0, void 0, function* (
  * @returns {Promise<void>}
  */
 const checkTasks = () => __awaiter(void 0, void 0, void 0, function* () {
-    const highPriorityTasks = yield getHighPriorityTasks();
-    const currentTime = new Date();
-    const completed = highPriorityTasks.filter(task => task.isCompleted === true);
-    const incompleted = highPriorityTasks.filter(task => task.isCompleted !== true);
-    const lateTasks = [];
-    let taskCount = 0;
-    highPriorityTasks.forEach((task) => {
-        var _a;
-        // if no due time, continue
-        if (!((_a = task.due) === null || _a === void 0 ? void 0 : _a.datetime)) {
-            return;
+    try {
+        const highPriorityTasks = yield getHighPriorityTasks();
+        if (highPriorityTasks === undefined) {
+            throw new Error("Error fetching high priority tasks.");
         }
-        const dueTime = new Date(task.due.datetime);
-        const dueInMinutes = Math.round((dueTime.getTime() - currentTime.getTime()) / (1000 * 60));
-        taskCount++;
-        console.log(`- ${taskCount}). ${task.content}, due ${dueInMinutes >= 0 ? `in ${dueInMinutes}min` : `${Math.abs(dueInMinutes)}min ago`}`);
-        // Collect Tasks that werent completed on time
-        if (!task.isCompleted && (dueInMinutes <= 0)) {
-            lateTasks.push(task);
-        }
-        // If task was not completed on time
-        if (!task.isCompleted && (dueInMinutes <= 0 && dueInMinutes > -5)) {
-            // Run the "stick" functionality for the tasks missed 
-            console.log(`High Priority Task "${task.content}" was not completed in time.`);
-            console.log("Do Better!");
-        }
-        // If task was completed on time
-        if (task.isCompleted && (dueInMinutes <= 0 && dueInMinutes > -5)) {
-            // Run the "carrot" functionality for the tasks missed 
-            console.log(`High Priority Task "${task.content}" was completed in time.`);
-            console.log("Great Job!");
-        }
-    });
-    const summary = `
-[[ PROCESS SUMMARY ]]
+        const currentTime = new Date();
+        const completed = highPriorityTasks.filter(task => task.isCompleted === true);
+        const incompleted = highPriorityTasks.filter(task => task.isCompleted !== true);
+        const lateTasks = [];
+        let taskCount = 0;
+        highPriorityTasks.forEach((task) => {
+            var _a;
+            // if no due time, continue
+            if (!((_a = task.due) === null || _a === void 0 ? void 0 : _a.datetime)) {
+                return;
+            }
+            const dueTime = new Date(task.due.datetime);
+            const dueInMinutes = Math.round((dueTime.getTime() - currentTime.getTime()) / (1000 * 60));
+            taskCount++;
+            console.log(`- ${taskCount}). ${task.content}, due ${dueInMinutes >= 0 ? `in ${dueInMinutes}min` : `${Math.abs(dueInMinutes)}min ago`}`);
+            // Collect Tasks that werent completed on time
+            if (!task.isCompleted && (dueInMinutes <= 0)) {
+                lateTasks.push(task);
+            }
+            // If task was not completed on time
+            if (!task.isCompleted && (dueInMinutes <= 0 && dueInMinutes > -5)) {
+                // Run the "stick" functionality for the tasks missed 
+                console.log(`High Priority Task "${task.content}" was not completed in time.`);
+                console.log("Do Better!");
+            }
+            // If task was completed on time
+            if (task.isCompleted && (dueInMinutes <= 0 && dueInMinutes > -5)) {
+                // Run the "carrot" functionality for the tasks missed 
+                console.log(`High Priority Task "${task.content}" was completed in time.`);
+                console.log("Great Job!");
+            }
+        });
+        const summary = `
+    [[ PROCESS SUMMARY ]]
 
 Completed: ${JSON.stringify(completed.map(task => task.content), null, 2)}
-
+    
 Incompleted: ${JSON.stringify(incompleted.map(task => task.content), null, 2)}
-
+    
 Late Tasks: ${JSON.stringify(lateTasks.map(task => task.content), null, 2)}
-
-[[ PROCESS END ]]
-`;
-    console.log(summary);
+    
+    [[ PROCESS END ]]
+    `;
+        console.log(summary);
+    }
+    catch (error) {
+        console.error(error);
+    }
 });
 console.log("Process running..");
 // checkTasks(); // For testing
