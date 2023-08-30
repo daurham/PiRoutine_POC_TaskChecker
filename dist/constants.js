@@ -64,4 +64,6 @@ export const resetModulesOnNewDay = () => {
         console.log("It's midnight or close to midnight.");
         // LockBox.lock();
     }
+    else {
+    }
 };

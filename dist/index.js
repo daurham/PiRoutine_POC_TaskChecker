@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import schedule from 'node-schedule';
 import { TodoistApi } from '@doist/todoist-api-typescript';
 import 'dotenv/config';
-import { Check_Every_N_Min, Desired_Tasks_Error_Description, Get_Desired_Type_Of_Tasks, Reprimand_Task_Incomplete_On_Time, Reward_Task_Complete_On_Time, resetModulesOnNewDay, printSummary } from './constants.js';
+import { Check_Every_N_Min, Desired_Tasks_Error_Description, Get_Desired_Type_Of_Tasks, Reprimand_Task_Incomplete_On_Time, Reward_Task_Complete_On_Time, resetModulesOnNewDay } from './constants.js';
 // Every N Minutes => 
 //    Fetch Tasks =>
 //        Check Tasks => 
@@ -71,7 +71,7 @@ const checkTasks = () => __awaiter(void 0, void 0, void 0, function* () {
         });
         // Clean up running modules based on currentTime
         resetModulesOnNewDay();
-        printSummary(desiredtasks);
+        // printSummary(desiredtasks)
     }
     catch (error) {
         console.error(error);

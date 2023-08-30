@@ -83,7 +83,7 @@ const checkTasks = async (): Promise<void> => {
     // Clean up running modules based on currentTime
     resetModulesOnNewDay();
 
-    printSummary(desiredtasks)
+    // printSummary(desiredtasks)
   } catch (error) {
     console.error(error);
   }
