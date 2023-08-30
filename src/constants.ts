@@ -15,15 +15,27 @@ export const Get_Desired_Type_Of_Tasks = (tasks: Task[]): Task[] => {
 
 export const Desired_Tasks_Error_Description = "high priority tasks";
 
+
+/**
+ * @description Stick
+ * @param {Task} task 
+ */
 export const Reward_Task_Complete_On_Time = (task: Task): void => {
+  // if (task.description.includes("LockBox")) {
+    // LockBox.unlockLockBox();
+  // }
   // if (task.description.includes("LockBox")) {
     // LockBox.unlockLockBox();
   // }
     console.log(`  High Priority Task "${task.content}" was completed in time.`);
     console.log("  Great Job!");
-  };
+};
   
-export const Repromand_Task_Incomplete_On_Time = (task: Task): void => {
+/**
+ * @description Stick
+ * @param {Task} task 
+ */
+export const Reprimand_Task_Incomplete_On_Time = (task: Task): void => {
   // if (task.description.includes("WaterPump")) {
     // WaterPump.runCycle();
   // }
@@ -55,7 +67,21 @@ Incompleted: ${JSON.stringify(incompleted.map(task => task.content), null, 2)}
 
 
 
+export const resetModulesOnNewDay = () => {
+  const now = new Date();
+  const midnight = new Date(now);
+  midnight.setHours(0, 0, 0, 0);
 
+  const N_Minutes_Ago = new Date(now.getTime() - Check_Every_N_Min * 60 * 1000);
+
+  const isMidnight = now.getTime() === midnight.getTime() || N_Minutes_Ago <= midnight;
+
+  // If Midnight or in range, reset modules
+  if (isMidnight) {
+    console.log("It's midnight or close to midnight.");
+    // LockBox.lock();
+  }
+};
 
 
 

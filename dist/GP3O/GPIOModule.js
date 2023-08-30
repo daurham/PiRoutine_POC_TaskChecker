@@ -3,10 +3,10 @@
  * new Gpio(gpio, direction [, edge] [, options])
  */
 import { Gpio } from 'onoff';
-const Run_Pump_For_N_Sec = 3;
+// const Run_Pump_For_N_Sec = 3;
 // Create the Module class
 export class GPIOModule {
-    constructor(pin, direction = 'out', edge = 'none', options = {}) {
+    constructor(pin, direction = 'out', edge = undefined, options = undefined) {
         this.pin = pin;
         this.gpio = new Gpio(this.pin, direction, edge, options);
     }
@@ -30,12 +30,12 @@ export class GPIOModule {
     // 
     //  Ex:
     // LockBox
-    // unlockLockBox(): void {
+    // unlock(): void {
     //   this.gpio.writeSync(1);
     // }
     // 
     //  Ex:
-    // lockLockBox(): void {
+    // lock(): void {
     //   this.gpio.writeSync(0);
     // }
     cleanup() {

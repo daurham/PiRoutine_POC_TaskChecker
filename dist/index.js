@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import schedule from 'node-schedule';
 import { TodoistApi } from '@doist/todoist-api-typescript';
 import 'dotenv/config';
-import { Check_Every_N_Min, Desired_Tasks_Error_Description, Get_Desired_Type_Of_Tasks, Repromand_Task_Incomplete_On_Time, Reward_Task_Complete_On_Time, printSummary } from './constants.js';
+import { Check_Every_N_Min, Desired_Tasks_Error_Description, Get_Desired_Type_Of_Tasks, Reprimand_Task_Incomplete_On_Time, Reward_Task_Complete_On_Time, resetModulesOnNewDay, printSummary } from './constants.js';
 // Every N Minutes => 
 //    Fetch Tasks =>
 //        Check Tasks => 
@@ -58,16 +58,19 @@ const checkTasks = () => __awaiter(void 0, void 0, void 0, function* () {
             }
             const dueTime = new Date(task.due.datetime);
             const dueInMinutes = Math.round((dueTime.getTime() - currentTime.getTime()) / (1000 * 60));
+            // Log each task and its due time
             console.log(`- ${task.content}, due ${dueInMinutes >= 0 ? `in ${dueInMinutes}min` : `${Math.abs(dueInMinutes)}min ago`}`);
             // If task was not completed on time
             if (!task.isCompleted && (dueInMinutes <= 0 && dueInMinutes > -Check_Every_N_Min)) {
-                Repromand_Task_Incomplete_On_Time(task);
+                Reprimand_Task_Incomplete_On_Time(task);
             }
             // If task was completed on time
             if (task.isCompleted && (dueInMinutes <= 0 && dueInMinutes > -Check_Every_N_Min)) {
                 Reward_Task_Complete_On_Time(task);
             }
         });
+        // Clean up running modules based on currentTime
+        resetModulesOnNewDay();
         printSummary(desiredtasks);
     }
     catch (error) {
