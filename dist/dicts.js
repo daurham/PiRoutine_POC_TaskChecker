@@ -3,8 +3,6 @@ export const scheduleRules = {
     Every5Minutes: '*/5 * * * *',
     Every1Minute: '*/1 * * * *',
     EveryMidnight: '0 0 * * *',
-    // EveryNMinutes: `*/${SYSTEM_SETTINGS.Check_Every_N_Min} * * * *`,
-    // EveryNSeconds: `*/${SYSTEM_SETTINGS.Check_Every_N_Sec} * * * * *`,
     'Every6:00PM': '0 18 * * *',
     'Every7:10PM': '10 19 * * *',
     'Every7:30PM': '30 19 * * *',

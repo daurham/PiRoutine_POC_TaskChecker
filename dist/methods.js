@@ -1,5 +1,3 @@
-// import { Check_Every_N_Min } from "./constants.js";
-// import { timeSetter } from "./dicts.js";
 // import { WhiteLED, LockBox, WaterPump } from "./GP3O/index.js";
 /**
  * @description Filter only the tasks you want to check against
@@ -59,9 +57,8 @@ export const printSummary = (taskLog) => {
 /**
  * Reset modules on a new day
  */
-export const resetModulesOnNewDay = () => {
+export const resetModules = () => {
     console.log(`[ Resetting Modules for ${new Date().toLocaleString()} ]`);
-    // 
     // Perform reset actions...
     //
     // Ex:

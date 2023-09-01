@@ -8,17 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { TodoistApi } from '@doist/todoist-api-typescript';
-import { API_KEY, SYSTEM_SETTINGS, } from './constants.js';
-import { Get_Desired_Type_Of_Tasks, Punish_Incompleted_On_Time, Reward_Completed_On_Time, printSummary } from './methods.js';
+import { API_KEY, SYSTEM_SETTINGS } from './constants.js';
 import { ErrorMessage } from './dicts.js';
-// Every N Duration => 
-//    Fetch Tasks =>
-//        Check Tasks => 
-//            Condition => 
-//              || Response -> 
-//                  || Carrot  
-//                  || Stick  
-//              || Continue -> 
+import { Get_Desired_Type_Of_Tasks, Punish_Incompleted_On_Time, Reward_Completed_On_Time, printSummary } from './methods.js';
 /**
  * @description Fetch tasks with the highest priority
  * @returns {Promise<Task[] | undefined>} Returns tasks with the highest priority
